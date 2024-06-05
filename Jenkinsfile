@@ -1,19 +1,14 @@
 pipeline {
-    agent {
-        node{
-            label 'maven-server'
-            //Remote build server node
-        }
-    }
+    agent any
     tools {
-        maven "mvn"
+        maven "maven"
         //Local environment variable for maven dependency and its location
     }
     stages {
             stage('Git Clone') {
                 steps {
                     // Get code from a GitHub repository
-                    git branch: 'main', url: 'https://github.com/sraj1123/FinalBCI'
+                    git branch: 'master', url: 'https://github.com/sraj1123/FinalBCI'
                 }
             }
             stage('Maven Build') {
