@@ -5,7 +5,6 @@ pipeline {
     tools {
         // Define Maven tool installation
         maven 'maven'
-        sonarqubeScanner 'SonarQubeScanner'
     }
  
     stages {
