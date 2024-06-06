@@ -27,7 +27,7 @@ pipeline {
         stage('Upload to Artifactory') {
             steps {
                 script {
-                    def server = Artifactory.newServer url: 'http://172.16.7.108:8082/artifactory/HP/', credentialsId: 'JFrogIDs'
+                    def server = Artifactory.newServer url: 'http://172.16.7.108:8082/artifactory/HP/', credentialsId: 'JFrog'
                     def uploadSpec = """{
                         "files": [
                             {
