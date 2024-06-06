@@ -32,7 +32,7 @@ pipeline {
                         "files": [
                             {
                                 "pattern": "module-a/target/*.jar",
-                                "target": "example-repo-local/"
+                                "target": "HP/"
                             }
                         ]
                     }"""
