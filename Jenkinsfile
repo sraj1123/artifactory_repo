@@ -11,7 +11,7 @@ pipeline {
         stage('Git Clone') {
             steps {
                 // Get code from a GitHub repository
-                git branch: 'main', url: 'https://github.com/sraj1123/artifactory_repo.git'
+                git branch: 'master', url: 'https://github.com/sraj1123/artifactory_repo.git'
             }
         }
 
@@ -27,7 +27,7 @@ pipeline {
         stage('Upload to Artifactory') {
             steps {
                 script {
-                    def server = Artifactory.newServer url: 'http://172.16.7.108:8082/artifactory', credentialsId: 'JFrog'
+                    def server = Artifactory.newServer url: 'http://172.16.7.108:8082/artifactory/example-repo-local/', credentialsId: 'JFrog'
                     def uploadSpec = """{
                         "files": [
                             {
