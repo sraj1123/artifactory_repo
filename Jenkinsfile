@@ -1,5 +1,6 @@
 pipeline {
     agent any
+
     // Define tools to be installed
     tools {
         // Define Maven tool installation
@@ -13,6 +14,7 @@ pipeline {
                 git branch: 'main', url: 'https://github.com/sraj1123/artifactory_repo.git'
             }
         }
+
         stage('Maven Build') {
             steps {
                 script {
@@ -21,11 +23,11 @@ pipeline {
                 }
             }
         }
-    stages {
+
         stage('Upload to Artifactory') {
             steps {
                 script {
-                    def server = Artifactory.newServer url: 'http://172.16.7.108:8082/artifactory/example-repo-local/', credentialsId: 'JFrog'
+                    def server = Artifactory.newServer url: 'http://172.16.7.108:8082/artifactory', credentialsId: 'JFrog'
                     def uploadSpec = """{
                         "files": [
                             {
@@ -39,5 +41,4 @@ pipeline {
             }
         }
     }
-}
 }
