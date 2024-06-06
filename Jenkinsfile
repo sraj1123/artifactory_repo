@@ -33,6 +33,10 @@ pipeline {
                             {
                                 "pattern": "module-a/target/*.jar",
                                 "target": "HP/"
+                            },
+                            {
+                                "pattern": "module-b/target/*.jar",
+                                "target": "HP/"
                             }
                         ]
                     }"""
