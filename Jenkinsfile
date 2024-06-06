@@ -1,54 +1,43 @@
 pipeline {
     agent any
+    // Define tools to be installed
     tools {
-        maven "maven"
-        //Local environment variable for maven dependency and its location
+        // Define Maven tool installation
+        maven 'maven'
     }
+ 
     stages {
-            stage('Git Clone') {
-                steps {
-                    // Get code from a GitHub repository
-                    git branch: 'master', url: 'https://github.com/sraj1123/FinalBCI'
-                }
+        stage('Git Clone') {
+            steps {
+                // Get code from a GitHub repository
+                git branch: 'main', url: 'https://github.com/sraj1123/artifactory_repo.git'
             }
-            stage('Maven Build') {
-                steps {
-                    script {
+        }
+        stage('Maven Build') {
+            steps {
+                script {
                     // Build Maven Code
                     sh "mvn clean install"
-                    }
                 }
             }
-            stage('Sonar Scan') {
-                steps {
-                    script {
-                        //Run Sonarqube Scan
-                    withSonarQubeEnv(credentialsId: 'SonarQube_Token') {
-                    sh 'mvn sonar:sonar -Dsonar.projectName=Test2 -Dsonar.projectKey=Test2'
-                        }
-                    }
-                }
-            }
-            stage("Uploading to JFrog Artifactory"){
-                steps{
-                    rtUpload(
-                        serverId: "Jfrog",
-                        spec: '''{
-                            "files":[{
-                                "pattern": "module-a/target/*.jar",
-                                "target": "example-repo-local"
-                            }]
-                        }
-                        ''',
-    
-                        )
-                        }
-                }                
-            stage('Archive Artivact') {
-                steps {
-                    //Archive Artifact
-                    archiveArtifacts artifacts: 'module-a/target/*.jar', followSymlinks: false
-                }
-            }					   
         }
+    stages {
+        stage('Upload to Artifactory') {
+            steps {
+                script {
+                    def server = Artifactory.newServer url: 'http://172.16.7.108:8082/artifactory/example-repo-local/', credentialsId: 'JFrog'
+                    def uploadSpec = """{
+                        "files": [
+                            {
+                                "pattern": "module-a/target/*.jar",
+                                "target": "example-repo-local/"
+                            }
+                        ]
+                    }"""
+                    server.upload(uploadSpec)
+                }
+            }
+        }
+    }
+}
 }
